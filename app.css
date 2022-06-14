@@ -1,0 +1,113 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body,
+.wrapper {
+    height: 100%;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.btn:hover {
+    background-color: #1b4278;
+}
+
+.btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.btn:disabled:hover {
+    background-color: #3b6aab;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.app {
+    max-width: 1000px;
+    width: 100%;
+    flex: 1;
+}
+
+.app__title {
+    margin-bottom: 20px;
+}
+
+.title {
+    font-weight: 300;
+    font-size: 2.25rem;
+    text-align: center;
+}
+
+.game {
+
+}
+
+.game__header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.game__info {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-column-gap: 20px;
+}
+
+.game__info-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.25rem;
+}
+
+.digit {
+    font-size: 2rem;
+    color: #2c2ca9;
+}
+
+.game__controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 180px;
+    width: 100%;
+}
+
+.btn {
+    border: 0;
+    cursor: pointer;
+    font-family: inherit;
+    padding: 8px 25px;
+    background-color: #3b6aab;
+    color: #ffffff;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: 0.1s background-color ease-out;
+}
+
+.game__field {
+    display: grid;
+    grid-template-columns: repeat(4, 150px);
+    grid-template-rows: repeat(4, 150px);
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.game__square {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
