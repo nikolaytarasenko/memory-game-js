@@ -1,12 +1,8 @@
-// document.querySelector('.card').addEventListener('click', e => {
-//     const cardInner = e.target.closest('.card__inner');
-//
-//     cardInner.classList.add('flipped');
-// })
-
 class Memory {
-    constructor(gameField) {
+    constructor(gameField, startButton, resetButton) {
         this.$gameField = gameField;
+        this.$startButton = startButton;
+        this.$resetButton = resetButton;
         this.initialCards = [
             {
                 name: "php",
@@ -63,10 +59,20 @@ class Memory {
         this.init();
     }
 
+    reset() {
+        this.flippedCards = [];
+        this.matches = [];
+        this.attempts = 0;
+        this.clearGameField();
+        this.toggleButtons();
+    }
+
     init() {
+        this.toggleButtons();
         this.drawAttemptsCount();
         this.drawScoresCount();
         this.drawAllPairsCount();
+        this.clearGameField();
         this.drawGameField();
         this.addGameFieldClickHandler();
     }
@@ -84,6 +90,10 @@ class Memory {
     }
 
     // game functions
+    clearGameField() {
+        this.$gameField.innerHTML = '';
+    }
+
     drawGameField() {
         const cards = this.createCardList();
 
@@ -161,23 +171,45 @@ class Memory {
 
     drawAttemptsCount() {
         const attempts = document.querySelector('.attempts .digit');
+
         attempts.textContent = this.attempts;
     }
 
     drawScoresCount() {
         const scores = document.querySelector('.scores .digit');
+
         scores.textContent = this.matches.length.toString();
     }
 
     drawAllPairsCount() {
         const allPairs = document.querySelector('.all .digit');
+
         allPairs.textContent = this.initialCards.length.toString();
+    }
+
+    toggleStartButtonState() {
+        this.$startButton.disabled ?
+            this.$startButton.removeAttribute('disabled') :
+            this.$startButton.setAttribute('disabled', 'true');
+    }
+
+    toggleResetButtonState() {
+        this.$resetButton.disabled ?
+            this.$resetButton.removeAttribute('disabled') :
+            this.$resetButton.setAttribute('disabled', 'true');
+    }
+
+    toggleButtons() {
+        this.toggleStartButtonState();
+        this.toggleResetButtonState();
     }
 }
 
 const gameField = document.querySelector('.game__field');
 const startButton = document.querySelector('#start');
+const resetButton = document.querySelector('#reset');
 
-const game = new Memory(gameField);
+const game = new Memory(gameField, startButton, resetButton);
 
 startButton.addEventListener('click', () => game.start());
+resetButton.addEventListener('click', () => game.reset());
