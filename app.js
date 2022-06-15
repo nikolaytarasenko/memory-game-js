@@ -53,7 +53,10 @@ class Memory {
             name: "www",
             img: "./images/www.png",
             id: 0
-        }
+        };
+        this.flippedCards = [];
+        this.matches = [];
+        this.attempts = 0;
     }
 
     start() {
@@ -61,7 +64,11 @@ class Memory {
     }
 
     init() {
-        this.drawField();
+        this.drawAttemptsCount();
+        this.drawScoresCount();
+        this.drawAllPairsCount();
+        this.drawGameField();
+        this.addGameFieldClickHandler();
     }
 
     // helper functions
@@ -77,12 +84,12 @@ class Memory {
     }
 
     // game functions
-    drawField() {
+    drawGameField() {
         const cards = this.createCardList();
 
         cards.forEach(card => {
             this.$gameField.insertAdjacentHTML('beforeend', card);
-        })
+        });
     }
 
     createCardList() {
@@ -96,7 +103,7 @@ class Memory {
 
     createCard(cardData) {
         return `<div class="game__card card">
-                    <div class="card__inner">
+                    <div class="card__inner" data-card-id="${cardData.id}">
                         <div class="card__front">
                             <img src="${cardData.img}" alt="${cardData.name}">
                         </div>
@@ -106,6 +113,65 @@ class Memory {
                     </div>
                 </div>
             `;
+    }
+
+    addGameFieldClickHandler() {
+        this.$gameField.addEventListener('click', e => this.flipCard(e));
+    }
+
+    flipCard(e) {
+        const cardInner = e.target.closest('.card__inner');
+
+        if (cardInner.classList.contains('flipped')) return;
+
+        cardInner.classList.add('flipped');
+
+        if (this.flippedCards.length <= 1) this.flippedCards.push(cardInner.dataset.cardId);
+
+        if (this.flippedCards.length === 2) {
+            cardInner.addEventListener('transitionend', () => this.checkFlippedCards(), { once: true });
+            this.attempts++;
+            this.drawAttemptsCount();
+        }
+    }
+
+    checkFlippedCards() {
+        if (this.flippedCards[0] === this.flippedCards[1]) {
+            const matchedCard = this.initialCards.filter(card => card.id === Number(this.flippedCards[0]));
+
+            this.matches.push(matchedCard);
+            this.drawScoresCount();
+            this.flippedCards = [];
+        } else {
+            this.hideCards();
+        }
+    }
+
+    hideCards() {
+        const cardsInner = document.querySelectorAll('.card__inner');
+
+        cardsInner.forEach(cardInner => {
+            const cardId = cardInner.dataset.cardId;
+
+            if (this.flippedCards.includes(cardId)) cardInner.classList.remove('flipped');
+        });
+
+        this.flippedCards = [];
+    }
+
+    drawAttemptsCount() {
+        const attempts = document.querySelector('.attempts .digit');
+        attempts.textContent = this.attempts;
+    }
+
+    drawScoresCount() {
+        const scores = document.querySelector('.scores .digit');
+        scores.textContent = this.matches.length.toString();
+    }
+
+    drawAllPairsCount() {
+        const allPairs = document.querySelector('.all .digit');
+        allPairs.textContent = this.initialCards.length.toString();
     }
 }
 
