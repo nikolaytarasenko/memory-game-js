@@ -43,6 +43,7 @@ body {
 }
 
 .app__title {
+    margin-top: 10px;
     margin-bottom: 20px;
 }
 
@@ -53,7 +54,7 @@ body {
 }
 
 .game {
-
+    padding: 0 15px;
 }
 
 .game__header {
@@ -79,6 +80,14 @@ body {
     color: #2c2ca9;
 }
 
+.game__end-message {
+    font-size: 2.5rem;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #3cab18;
+}
+
 .game__controls {
     display: flex;
     justify-content: space-between;
@@ -101,8 +110,7 @@ body {
 
 .game__field {
     display: grid;
-    grid-template-columns: repeat(4, minmax(50px, 150px));
-    grid-template-rows: repeat(4, minmax(50px, 150px));
+    grid-template-columns: repeat(4, minmax(50px, 120px));
     justify-content: center;
     gap: 10px;
     margin-top: 20px;
@@ -113,6 +121,7 @@ body {
     justify-content: center;
     align-items: center;
     perspective: 700px;
+    aspect-ratio: 1/1;
     cursor: pointer;
 }
 
@@ -145,4 +154,15 @@ body {
 
 .card__front {
     transform: rotateY(180deg);
+}
+
+@media (max-width: 550px) {
+    .game__header {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .game__info {
+        margin-bottom: 20px;
+    }
 }

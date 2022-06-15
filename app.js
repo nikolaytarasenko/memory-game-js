@@ -65,13 +65,13 @@ class Memory {
         this.attempts = 0;
         this.clearGameField();
         this.toggleButtons();
+        this.deleteEndMessage();
+        this.drawCounts();
     }
 
     init() {
         this.toggleButtons();
-        this.drawAttemptsCount();
-        this.drawScoresCount();
-        this.drawAllPairsCount();
+        this.drawCounts();
         this.clearGameField();
         this.drawGameField();
         this.addGameFieldClickHandler();
@@ -152,6 +152,8 @@ class Memory {
             this.matches.push(matchedCard);
             this.drawScoresCount();
             this.flippedCards = [];
+
+            if (this.matches.length === this.initialCards.length) this.drawEndMessage();
         } else {
             this.hideCards();
         }
@@ -167,6 +169,30 @@ class Memory {
         });
 
         this.flippedCards = [];
+    }
+
+    createEndMessage() {
+        const div = document.createElement('div');
+
+        div.classList.add('game__end-message');
+        div.textContent = 'The end!';
+
+        return div;
+    }
+
+    drawEndMessage() {
+        const message = this.createEndMessage();
+        const $gameInfo = document.querySelector('.game__info');
+
+        $gameInfo.after(message);
+    }
+
+    deleteEndMessage() {
+        if (document.querySelector('.game__end-message')) {
+            const $endMessage = document.querySelector('.game__end-message');
+
+            $endMessage.remove();
+        }
     }
 
     drawAttemptsCount() {
@@ -185,6 +211,12 @@ class Memory {
         const allPairs = document.querySelector('.all .digit');
 
         allPairs.textContent = this.initialCards.length.toString();
+    }
+
+    drawCounts() {
+        this.drawAttemptsCount();
+        this.drawScoresCount();
+        this.drawAllPairsCount();
     }
 
     toggleStartButtonState() {
